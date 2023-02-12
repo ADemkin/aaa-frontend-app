@@ -20,7 +20,7 @@ AAA Frontend Application
 Установка
 =========
 
-Для сборки докер образа выполните команду::
+Для сборки докер образа::
 
 $ make build
 
@@ -28,14 +28,19 @@ $ make build
 ======
 
 Для запуска в режиме разработки с автоматической перезагрузкой сервера при
-изменении кода, выполните команду::
+изменении кода::
 
 $ make dev
 
 
-Для запуска приложения напрямую, выполните::
+Для запуска приложения напрямую::
 
 $ make run
+
+
+Для запуска тестов::
+
+$ make test
 
 
 Полезные ссылки
@@ -43,5 +48,7 @@ $ make run
 
 * `Базовый шаблон HTML документа и блоки Bootstrap <https://getbootstrap.com/docs/5.2/getting-started/introduction/>`_
 * `Описания HTML тегов и их аттрибутов <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form>`_
-* `MVC паттер проектирования UI <https://en.wikipedia.org/wiki/Model–view–controller>`_
+* `MVC паттерн проектирования UI <https://en.wikipedia.org/wiki/Model–view–controller>`_
 * `XKCD как пример MPA приложения <https://xkcd.com>`_
+* `Документация Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`_
+* `Документация aiohttp <https://docs.aiohttp.org/en/stable/>`_
