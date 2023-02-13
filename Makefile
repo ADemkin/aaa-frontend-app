@@ -22,5 +22,19 @@ run:
 	
 
 test:
-	@docker run --net=host -v $(PWD):/app -ti ${IMAGE} \
+	@docker run -v $(PWD):/app -ti ${IMAGE} \
 		python -m pytest --disable-warnings -v
+
+flake8:
+	@docker run -v $(PWD):/app -ti ${IMAGE} \
+		python -m flake8 lib
+
+pycodestyle:
+	@docker run -v $(PWD):/app -ti ${IMAGE} \
+		python -m pycodestyle lib
+
+pylint:
+	@docker run -v $(PWD):/app -ti ${IMAGE} \
+		python -m pylint lib
+
+lint: flake8 pycodestyle pylint

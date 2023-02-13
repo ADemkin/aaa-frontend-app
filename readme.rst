@@ -42,6 +42,16 @@ $ make run
 
 $ make test
 
+Для выполнения линтеров::
+
+$ make lint
+
+или каждый по отдельности::
+
+$ make flake8
+$ make pycodestyle
+$ make pylint
+
 
 Полезные ссылки
 ===============
