@@ -12,13 +12,13 @@ build:
 
 dev:
 	@docker run -v $(PWD):/app \
-		-p 127.0.0.1:8080:8080 \
-		-p 127.0.0.1:8081:8081 \
+		-p 127.0.0.1:8000:8000 \
+		-p 127.0.0.1:8001:8001 \
 		-it ${IMAGE} \
-		adev runserver --livereload --host 0.0.0.0 --port 8080 run.py
+		adev runserver --livereload --host 0.0.0.0 --port 8000 run.py
 
 run:
-	@docker run -it -p 127.0.0.1:8080:8080 ${IMAGE}
+	@docker run -it -p 127.0.0.1:8000:8000 ${IMAGE}
 	
 
 test:
