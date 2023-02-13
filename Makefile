@@ -11,9 +11,11 @@ build:
 	@docker build -t ${IMAGE} .
 
 dev:
-	@docker run -v $(PWD):/app -p 127.0.0.1:8080:8080 -it ${IMAGE} \
-		python -m gunicorn lib.app:async_create_app --bind 0.0.0.0:8080 \
-		--reload --worker-class aiohttp.GunicornWebWorker
+	@docker run -v $(PWD):/app \
+		-p 127.0.0.1:8080:8080 \
+		-p 127.0.0.1:8081:8081 \
+		-it ${IMAGE} \
+		adev runserver --livereload --host 0.0.0.0 --port 8080 run.py
 
 run:
 	@docker run -it -p 127.0.0.1:8080:8080 ${IMAGE}
