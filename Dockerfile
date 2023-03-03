@@ -1,6 +1,8 @@
 # FROM python:3.8-alpine
 FROM python:3.8-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1
+
 RUN python -m pip install --upgrade pip
 RUN mkdir /app
 

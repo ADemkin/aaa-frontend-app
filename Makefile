@@ -19,7 +19,6 @@ dev:
 
 run:
 	@docker run -it -p 127.0.0.1:8000:8000 ${IMAGE}
-	
 
 test:
 	@docker run -v $(PWD):/app -ti ${IMAGE} \
