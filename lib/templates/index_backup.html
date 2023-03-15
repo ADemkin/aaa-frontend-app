@@ -21,16 +21,21 @@
       </div>
     </nav>
 
+    {% if not error and not image_b64 and not words %}
     <div class="container text-center col-8">
       <h1 class="display-3">
         Занятие ААА по фронтенду
       </h1>
     </div>
+    {% endif %}
 
+    {% if error %}
     <div class="container col-6 mt-4 alert alert-danger">
-      Some Nasty Error :(
+      {{ error }}
     </div>
+    {% endif %}
 
+    {% if image %}
     <div class="container text-center col-8 mt-4">
       <figure class="figure">
         <img class="img-fluid rounded mx-auto" src="{{ image }}">
@@ -39,7 +44,9 @@
         </figcaption>
       </figure>
     </div>
+    {% endif %}
 
+    {% if words %}
     <div class="container col-6">
       <table class="table mx-auto">
         <thead>
@@ -50,27 +57,29 @@
           </tr>
         </thead>
         <tbody>
+          {% for word in words %}
           <tr>
             <td>
-              <img src="" alt="IMG">
+              <img src="{{ word.image }}">
             </td>
-            <td>WORD</td>
-            <td class="">
-              99.9%
+            <td>{{ word.word }}</td>
+            <td class="
+                       {% if word.accuracy > 0.95 %}
+                       table-success
+                       {% elif word.accuracy > 0.6 %}
+                       table-warning
+                       {% elif word.accuracy < 0.3 %}
+                       table-danger
+                       {% endif %}
+                       ">
+              {{ "%.2f"|format(word.accuracy * 100) }}%
             </td>
           </tr>
-          <tr>
-            <td>
-              <img src="" alt="IMG">
-            </td>
-            <td>WORD</td>
-            <td class="">
-              99.9%
-            </td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
+    {% endif %}
 
     <form class="container col-6 p-4 mt-4 border rounded" method="POST" enctype="multipart/form-data">
       <div class="mb-3">
