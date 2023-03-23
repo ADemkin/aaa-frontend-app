@@ -39,3 +39,19 @@ async def test_if_sent_image_with_word_then_word_appear_in_response(
     text = await response.text()
     assert response.status == HTTPStatus.OK, text
     assert text_expected in text
+
+
+async def test_if_sent_faulty_image_then_error_appear_in_response(client):
+    faulty_image_path = 'tests/error.jpg'
+    form = FormData()
+    form.add_field(
+        name='image',
+        value=open(faulty_image_path, 'rb'),
+        content_type='image/jpeg',
+        filename='test_image.jpg',
+    )
+    response = await client.post('/', data=form)
+    text = (await response.text()).lower()
+    assert response.status == HTTPStatus.OK, text
+    error = 'coordinate &#39;lower&#39; is less than &#39;upper&#39;'
+    assert error in text, text
