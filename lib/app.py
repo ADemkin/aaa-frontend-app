@@ -12,7 +12,7 @@ lib = Path("lib")
 
 
 def create_app() -> Application:
-    app = Application()
+    app = Application(client_max_size = 30 * 1024**2)
     # setup routes
     app.router.add_static("/static/", lib / "static")
     app.router.add_view("/", views.IndexView, name="index")
