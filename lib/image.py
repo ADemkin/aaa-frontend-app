@@ -3,6 +3,7 @@ from base64 import b64encode
 from typing import List, Tuple
 from pillow_heif import register_heif_opener
 
+import numpy as np
 from PIL import Image, ImageFont
 from PIL.ImageDraw import Draw
 
@@ -10,12 +11,13 @@ Coords = List[List[int]]  # EasyOCR format
 Box = Tuple[int, int, int, int]  # PIL format
 register_heif_opener()
 
+
 def open_image(image_fp: BufferedReader) -> Image:
-    im = Image.open(image_fp)
-    print(im.size)
-    if not im.mode == 'RGB':
-        im = im.convert('RGB')
-    return im
+    return Image.open(image_fp)
+
+
+def image_to_numpy(image_fp: BufferedReader):
+    return np.array(open_image(image_fp).convert('RGB'))
 
 
 class PolygonDrawer:
