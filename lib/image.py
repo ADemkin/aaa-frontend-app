@@ -4,7 +4,7 @@ from typing import List, Tuple
 from pillow_heif import register_heif_opener
 
 import numpy as np
-from PIL import Image, ImageFont
+from PIL import Image
 from PIL.ImageDraw import Draw
 
 Coords = List[List[int]]  # EasyOCR format
@@ -39,7 +39,7 @@ class PolygonDrawer:
         x, y = box[:2]
         try:
             self._draw.text((x, y - text_height), word, fill="red")
-        except BaseException as e:
+        except Exception:
             pass
 
     def crop(self, coords: Coords) -> Image:

@@ -1,8 +1,6 @@
 from aiohttp.web import Response
 from aiohttp.web import View
 from aiohttp_jinja2 import render_template
-import numpy as np
-from PIL import Image, ImageFont
 
 from lib.image import image_to_img_src
 from lib.image import PolygonDrawer
@@ -20,8 +18,12 @@ class IndexView(View):
             draw = PolygonDrawer(open_image(form["image"].file))
             model = self.request.app["model"]
             words = []
-            min_accuracy = int(form["min_accuracy"]) / 100
-            for coords, word, accuracy in model.readtext(image_to_numpy(form["image"].file)):
+            try:
+                min_accuracy = int(form["min_accuracy"]) / 100
+            except Exception:
+                min_accuracy = 0
+            image_np = image_to_numpy(form["image"].file)
+            for coords, word, accuracy in model.readtext(image_np):
                 if accuracy > min_accuracy:
                     draw.highlight_word(coords, word)
                     cropped_img = draw.crop(coords)
@@ -35,5 +37,5 @@ class IndexView(View):
             image_b64 = image_to_img_src(draw.get_highlighted_image())
             ctx = {"image": image_b64, "words": words}
         except Exception as err:
-            ctx = {"error": repr(err)}
+            ctx = {"error": str(err)}
         return render_template("index.html", self.request, ctx)
