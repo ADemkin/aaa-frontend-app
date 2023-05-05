@@ -1,17 +1,23 @@
 from io import BufferedReader, BytesIO
 from base64 import b64encode
 from typing import List, Tuple
+from pillow_heif import register_heif_opener
 
+import numpy as np
 from PIL import Image
 from PIL.ImageDraw import Draw
 
-
 Coords = List[List[int]]  # EasyOCR format
 Box = Tuple[int, int, int, int]  # PIL format
+register_heif_opener()
 
 
 def open_image(image_fp: BufferedReader) -> Image:
     return Image.open(image_fp)
+
+
+def image_to_numpy(image_fp: BufferedReader):
+    return np.array(open_image(image_fp).convert('RGB'))
 
 
 class PolygonDrawer:
@@ -31,7 +37,10 @@ class PolygonDrawer:
         self._draw.rectangle(box, outline="red")
         text_height = 12  # px, hardcoded
         x, y = box[:2]
-        self._draw.text((x, y - text_height), word, fill="red")
+        try:
+            self._draw.text((x, y - text_height), word, fill="red")
+        except Exception:
+            pass
 
     def crop(self, coords: Coords) -> Image:
         """Get cropped Image part"""
