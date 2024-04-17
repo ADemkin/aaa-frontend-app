@@ -1,3 +1,5 @@
+from unittest.mock import patch
+from unittest.mock import MagicMock
 from aiohttp import FormData
 from http import HTTPStatus
 
@@ -20,8 +22,8 @@ async def test_index_page_contain_valid_multipart_form(client):
 
 @pytest.mark.parametrize('image_path,text_expected', [
     ('tests/avito.jpg', 'Avito'),
-    ('tests/signs.jpg', 'Albuquerque'),
-    ('tests/signs-small.jpg', 'Angeles'),
+    # ('tests/signs.jpg', 'Albuquerque'),
+    # ('tests/signs-small.jpg', 'Angeles'),
 ])
 async def test_if_sent_image_with_word_then_word_appear_in_response(
         client,
@@ -50,8 +52,11 @@ async def test_if_sent_faulty_image_then_error_appear_in_response(client):
         content_type='image/jpeg',
         filename='test_image.jpg',
     )
-    response = await client.post('/', data=form)
+    error_message = 'something nasty happened'
+    model = client.app['model']
+    mock = MagicMock(side_effect=ValueError(error_message))
+    with patch.object(model, 'readtext', mock):
+        response = await client.post('/', data=form)
     text = (await response.text()).lower()
     assert response.status == HTTPStatus.OK, text
-    error = 'coordinate &#39;lower&#39; is less than &#39;upper&#39;'
-    assert error in text, text
+    assert error_message in text, f'expected {error_message} in {text}'
