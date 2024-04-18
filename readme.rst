@@ -101,4 +101,5 @@ $ make pylint
 * `MVC паттерн проектирования UI <https://en.wikipedia.org/wiki/Model–view–controller>`_
 * `XKCD как пример MPA приложения <https://xkcd.com>`_
 * `Документация Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`_
+* `Фильтры в Jinja <https://jinja.palletsprojects.com/en/3.1.x/templates/#list-of-builtin-filters>`_
 * `Документация aiohttp <https://docs.aiohttp.org/en/stable/>`_
