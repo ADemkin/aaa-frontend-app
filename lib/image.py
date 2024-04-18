@@ -51,4 +51,4 @@ def image_b64encode(image: Image) -> str:
 
 
 def image_to_img_src(image: Image) -> str:
-    return f"data:image/jpeg;base64,{image_b64encode(image)}"
+    return f"data:image/png;base64,{image_b64encode(image)}"
