@@ -3,4 +3,3 @@ flake8
 pylint
 pytest-aiohttp
 pytest
-beautifulsoup4

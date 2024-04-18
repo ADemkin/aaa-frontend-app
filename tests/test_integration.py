@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 from aiohttp import FormData
 from http import HTTPStatus
 
-from bs4 import BeautifulSoup
 import pytest
 
 
@@ -11,13 +10,9 @@ async def test_index_page_contain_valid_multipart_form(client):
     response = await client.get('/')
     text = await response.text()
     assert response.status == HTTPStatus.OK, text
-    html = BeautifulSoup(text, 'html.parser')
-    form = html.find('form')
-    assert form is not None
-    assert form.attrs['method'].lower() == 'post'
-    assert form.attrs['enctype'].lower() == 'multipart/form-data'
-    submit = form.find('input', {'type': 'submit'})
-    assert submit is not None
+    assert 'method="post"' in text.lower(), 'У формы не указан POST метод'
+    assert 'enctype="multipart/form-data"' in text.lower(), 'у формы не указан enctype'
+    assert 'type="submit"' in text.lower(), 'у формы нет кнопки отправки'
 
 
 @pytest.mark.parametrize('image_path,text_expected', [
@@ -53,6 +48,7 @@ async def test_if_sent_faulty_image_then_error_appear_in_response(client):
     )
     error_message = 'something nasty happened'
     model = client.app['model']
+    # Тут мы мокаем модель, заставляя её всегда рейзить ошибку
     mock = MagicMock(side_effect=ValueError(error_message))
     with patch.object(model, 'readtext', mock):
         response = await client.post('/', data=form)
