@@ -8,11 +8,16 @@ from lib.image import open_image
 
 
 class IndexView(View):
+    template = "index.html"
+
     async def get(self) -> Response:
-        # return render_template("index.html", self.request, {})
+        # return render_template(self.template, self.request, {})
         return Response(
-            text='<h1>Hello</h1>',
-            # headers={'content-type': 'text/html'},
+            text="""
+                <h1>Всё работает</h1>
+                <p>теперь загляни в <pre>lib/views.py</pre></p>
+            """,
+            headers={"content-type": "text/html"},
         )
 
 #     async def post(self) -> Response:
@@ -34,4 +39,4 @@ class IndexView(View):
 #             )
 #         image_b64 = image_to_img_src(draw.get_highlighted_image())
 #         ctx = {"image": image_b64, "words": words}
-#         return render_template("index.html", self.request, ctx)
+#         return render_template(self.template, self.request, ctx)
