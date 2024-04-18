@@ -1,16 +1,15 @@
-# FROM python:3.8-alpine
-FROM python:3.8-slim
+FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 
-RUN python -m pip install --upgrade pip
+# RUN python -m pip install --upgrade pip
 RUN mkdir /app
 
-COPY ./requirements.txt ./dev-requirements.txt /app
+COPY ./requirements.txt ./requirements-dev.txt /app
 
 WORKDIR /app
 
-RUN python -m pip install --no-cache-dir -r requirements.txt -r dev-requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
 
 # pre download model
 RUN python -c "import easyocr; easyocr.Reader(['en'])"

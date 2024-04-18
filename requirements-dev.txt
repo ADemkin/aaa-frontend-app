@@ -1,6 +1,5 @@
 aiohttp-devtools
 flake8
-pycodestyle
 pylint
 pytest-aiohttp
 pytest
