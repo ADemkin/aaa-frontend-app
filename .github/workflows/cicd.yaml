@@ -1,0 +1,21 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  actions:
+    name: Run Linters and Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Build Docker image
+      run: make build
+    - name: Run linters
+      run: make lint
+    - name: Run tests
+      run: make test
+
