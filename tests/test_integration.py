@@ -21,9 +21,9 @@ async def test_index_page_contain_valid_multipart_form(client):
 
 
 @pytest.mark.parametrize('image_path,text_expected', [
-    ('tests/avito.jpg', 'Avito'),
-    # ('tests/signs.jpg', 'Albuquerque'),
-    # ('tests/signs-small.jpg', 'Angeles'),
+    ('images/avito.jpg', 'Avito'),
+    # ('images/signs.jpg', 'Albuquerque'),
+    # ('images/signs-small.jpg', 'Angeles'),
 ])
 async def test_if_sent_image_with_word_then_word_appear_in_response(
         client,
@@ -44,11 +44,10 @@ async def test_if_sent_image_with_word_then_word_appear_in_response(
 
 
 async def test_if_sent_faulty_image_then_error_appear_in_response(client):
-    faulty_image_path = 'tests/error.jpg'
     form = FormData()
     form.add_field(
         name='image',
-        value=open(faulty_image_path, 'rb'),
+        value=open('images/error.jpg', 'rb'),
         content_type='image/jpeg',
         filename='test_image.jpg',
     )
