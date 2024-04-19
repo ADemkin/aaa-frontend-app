@@ -1,10 +1,11 @@
 from aiohttp.web import Response
 from aiohttp.web import View
-from aiohttp_jinja2 import render_template
 
-from lib.image import image_to_img_src
-from lib.image import PolygonDrawer
-from lib.image import open_image
+# from aiohttp_jinja2 import render_template
+
+# from lib.image import image_to_img_src
+# from lib.image import PolygonDrawer
+# from lib.image import open_image
 
 
 class IndexView(View):
@@ -19,6 +20,7 @@ class IndexView(View):
             """,
             headers={"content-type": "text/html"},
         )
+
 
 #     async def post(self) -> Response:
 #         try:

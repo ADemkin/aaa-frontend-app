@@ -45,4 +45,9 @@ pylint: build
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
 		python -m pylint lib
 
-lint: flake8 pycodestyle pylint
+black: build
+	@echo 'Run black'
+	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
+		python -m black lib
+
+lint: black flake8 pycodestyle pylint

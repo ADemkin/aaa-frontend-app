@@ -1,5 +1,6 @@
 aiohttp-devtools
+black
 flake8
 pylint
-pytest-aiohttp
 pytest
+pytest-aiohttp
