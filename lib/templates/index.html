@@ -7,20 +7,101 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" >
   </head>
   <body>
-    <nav class="navbar bg-light">
+    <nav class="navbar bg-light mb-3">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="/static/avito.svg" />
         </a>
       </div>
     </nav>
+	
+	{% if not error and not image %}
+	<h1 class="display-1 text-center">Hello Word!</h1>
+	{% endif %}
+	
+	<!-- Alert Block -->
+	{% if error %}
+	<div class="container col-7">
+		<div class="alert alert-danger" role="alert">
+			{{ error }}
+		</div>
+	</div>
+	{% endif %}
+	
+	<!-- Image Block -->
+	{% if image %}
+	<div class="container text-center mb-3 col-7">
+		<img class="img-fluid rounded-3" src="{{ image }}" alt="Изображение"/>
+	</div>
+	{% endif %}
+	
+	<!-- File Input Block -->
+	<div class="container mb-3 col-7">
+		<form class="border border-2 p-3 rounded-4" method="POST" enctype="multipart/form-data">
+			<div class="mb-3">
+				<label for="formFileLg" class="form-label">Загрузите Jpeg изображение для распознавания текста</label>
+				<input class="form-control form-control-lg" id="formFileLg" type="file" name="image">
+			</div>
+			<button type="submit" class="btn btn-primary">Распознать</button>
+		</form>
+	</div>
+	
 
-    <!-- отсюда можно удалять -->
-    <div class="container">
-      <p class="text-center">Шаблон подключился! Теперь на его базе можно начинать делать веб приложение.</p>
-      <p class="text-center">Удали этот блок и скопируй сюда содержимое тега <code>body</code> из домашнего задания с занятия 2.</p>
-    </div>
-    <!-- всё что ниже лучше оставить -->
+	<!-- Table Block -->
+	
+	<!--
+		<tr>
+			<td><img src="images/image1.jpg" alt="Image 1"></td>
+			<td>Слово</td>
+			<td class="table-danger">30%</td>
+		</tr>
+		<tr>
+			<td><img src="images/image2.jpg" alt="Image 2"></td>
+			<td>Пример</td>
+			<td class="table-warning"</td>>85%</td>
+		</tr>
+		<tr>
+			<td><img src="images/image3.jpg" alt="Image 3"></td>
+			<td>Что-то</td>
+			<td class="table-success">95%</td>
+		</tr>
+	-->
+		
+
+	<div class="container col-7">
+		{% if words %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Изображение</th>
+					<th>Слово</th>
+					<th>Уверенность</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for word in words %}
+				<tr>
+					<td><img src="{{ word.image }}"/></td>
+					<td>{{ word.word | lower }}</td>
+					<td class="{% if word.accuracy > 0.9 %}
+							   table-success
+							   {% elif word.accuracy > 0.7 %}
+							   table-warning
+							   {% else %}
+							   table-danger
+							   {% endif %}"
+					>
+						{{ "%2.2f" | format(word.accuracy*100) }}%
+				    </td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+			<p class="text-center text-muted">В ожидании результатов...</p>
+		{% endif %}
+	</div>
+
 
     <footer class="container mt-5">
         <p class="text-center text-muted">© 2024 Академия Аналитиков Авито</p>
