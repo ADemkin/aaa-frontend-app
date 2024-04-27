@@ -1,5 +1,4 @@
-from aiohttp.web import Response
-from aiohttp.web import View
+from aiohttp.web import Response, View
 
 # from aiohttp_jinja2 import render_template
 

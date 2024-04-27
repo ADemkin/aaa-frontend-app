@@ -77,20 +77,21 @@ FYI
 Линтеры
 =======
 
-Для запуска линтеров::
+Для запуска линтера и форматтера::
 
     make lint
 
-или каждый по отдельности::
+Отдельно линтер::
 
-    make black
-    make flake8
-    make pycodestyle
-    make pylint
+    make ruff
 
+Отдельно форматтер::
 
-Black будет форматировать ваш код- это нормально.
-Линтеры так же будут запускаться через github actions при каждом пуше.
+    make format
+
+Ruff будет форматировать ваш код и автоматически исправлять некоторые типы ошибок.
+
+Линтеры также будут запускаться через GitHub Actions при каждом пуше.
 
 При нерабочих тестах и линтерах задание не будет принято.
 
@@ -105,3 +106,4 @@ Black будет форматировать ваш код- это нормаль
 * `Документация Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`_
 * `Фильтры в Jinja <https://jinja.palletsprojects.com/en/3.1.x/templates/#list-of-builtin-filters>`_
 * `Документация aiohttp <https://docs.aiohttp.org/en/stable/>`_
+* `Документация ruff <https://docs.astral.sh/ruff/>`_

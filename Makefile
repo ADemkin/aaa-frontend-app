@@ -1,10 +1,12 @@
 IMAGE:=aaa-frontend
+LIB_FOLDER:=lib
 
 help:
 	@echo "help - show this help"
 	@echo "build - build docker image"
 	@echo "test - run tests"
-	@echo "lint - run lining"
+	@echo "lint - run linting"
+	@echo "format - run formatting"
 	@echo "run - start applicaion"
 	@echo "dev - start applicaion in dev mode with live reload"
 
@@ -30,24 +32,25 @@ test: build
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
 		python -m pytest --disable-warnings -v
 
-flake8: build
-	@echo 'Run flake8'
+ruff: build
+	@echo 'Run ruff lint'
+# default GitHub variable https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+ifeq ($(CI), true) 
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m flake8 lib
-
-pycodestyle: build
-	@echo 'Run pycodestyle'
+		ruff check ${LIB_FOLDER}
+else
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m pycodestyle lib
+		ruff check ${LIB_FOLDER} --fix
+endif
 
-pylint: build
-	@echo 'Run pylint'
+format: build
+	@echo 'Run ruff format'
+ifeq ($(CI), true)
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m pylint lib
-
-black: build
-	@echo 'Run black'
+		ruff format --check ${LIB_FOLDER}
+else
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m black lib
+		ruff format ${LIB_FOLDER}
+endif
 
-lint: black flake8 pycodestyle pylint
+lint: ruff format

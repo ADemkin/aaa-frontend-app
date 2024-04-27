@@ -1,10 +1,9 @@
-from io import BufferedReader, BytesIO
 from base64 import b64encode
+from io import BufferedReader, BytesIO
 from typing import List, Tuple
 
 from PIL import Image
 from PIL.ImageDraw import Draw
-
 
 Coords = List[List[int]]  # EasyOCR format
 Box = Tuple[int, int, int, int]  # PIL format
