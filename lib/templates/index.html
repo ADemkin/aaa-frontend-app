@@ -15,12 +15,64 @@
       </div>
     </nav>
 
-    <!-- отсюда можно удалять -->
-    <div class="container">
-      <p class="text-center">Шаблон подключился! Теперь на его базе можно начинать делать веб приложение.</p>
-      <p class="text-center">Удали этот блок и скопируй сюда содержимое тега <code>body</code> из домашнего задания с занятия 2.</p>
+    {% if not error and not image %}
+    <h1 class="display-1 text-center mb-3">Привет, ААА!</h1>
+    {% endif %}
+
+    {% if error %}
+    <div class="container col-8">
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
     </div>
-    <!-- всё что ниже лучше оставить -->
+    {% endif %}
+
+    {% if image %}
+    <div class="container text-center mb-3 col-8">
+        <img class="img-fluid" src="{{ image }}"/>
+    </div>
+    {% endif %}
+
+    <div class="container mb-3 col-8">
+    <form class="border border-2 p-3 rounded-3" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Загрузите изображение в формате .jpg для распознавания текста</label>
+            <input class="form-control" type="file" id="formFile" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Распознать</button>
+      </form>
+    </div>
+    {%  if words %}
+    <div class="container mb-3 col-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Изображение</th>
+            <th scope="col">Слово</th>
+            <th scope="col">Точность</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for word in words %}
+            <tr>
+              <td><img src="{{ word.image }}"/></td>
+              <td>{{ word.word }}</td>
+              <td class="{% if word.accuracy > 0.90 %}
+                table-success
+                {% elif word.accuracy > 0.70 %}
+                table-warning
+                {% else %}
+                table-danger
+                {% endif %}
+                "
+              >
+                {{ "%2.2f" | format(word.accuracy * 100) }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
 
     <footer class="container mt-5">
         <p class="text-center text-muted">© 2024 Академия Аналитиков Авито</p>
