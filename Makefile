@@ -5,7 +5,8 @@ help:
 	@echo "help - show this help"
 	@echo "build - build docker image"
 	@echo "test - run tests"
-	@echo "lint - run linting"
+	@echo "lint - run linting and formatting"
+	@echo "ruff - run linting"
 	@echo "format - run formatting"
 	@echo "run - start applicaion"
 	@echo "dev - start applicaion in dev mode with live reload"
@@ -45,4 +46,4 @@ format: build
 
 lint: ruff format
 
-.PHONY: help clean build dev run test lint
+.PHONY: help clean build dev run test ruff format lint
