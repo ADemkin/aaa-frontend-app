@@ -1,12 +1,16 @@
 IMAGE:=aaa-frontend
+LIB_FOLDER:=lib
 
 help:
 	@echo "help - show this help"
 	@echo "build - build docker image"
 	@echo "test - run tests"
-	@echo "lint - run lining"
+	@echo "lint - run linting and formatting"
+	@echo "ruff - run linting"
+	@echo "format - run formatting"
 	@echo "run - start applicaion"
 	@echo "dev - start applicaion in dev mode with live reload"
+	@echo "clean - remove docker image"
 
 clean:
 	@docker rmi -f ${IMAGE}
@@ -30,24 +34,16 @@ test: build
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
 		python -m pytest --disable-warnings -v
 
-flake8: build
-	@echo 'Run flake8'
+ruff: build
+	@echo 'Run ruff lint'
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m flake8 lib
+		ruff check ${LIB_FOLDER} $(if $(CI),,--fix)
 
-pycodestyle: build
-	@echo 'Run pycodestyle'
+format: build
+	@echo 'Run ruff format'
 	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m pycodestyle lib
+		ruff format ${LIB_FOLDER} $(if $(CI),--check,)
 
-pylint: build
-	@echo 'Run pylint'
-	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m pylint lib
+lint: ruff format
 
-black: build
-	@echo 'Run black'
-	@docker run --rm -v $(PWD):/app -i ${IMAGE} \
-		python -m black lib
-
-lint: black flake8 pycodestyle pylint
+.PHONY: help clean build dev run test ruff format lint

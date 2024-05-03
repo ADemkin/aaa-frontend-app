@@ -1,0 +1,10 @@
+line-length = 88
+
+[lint]
+# by default these rules are enabled: ["E4", "E7", "E9", "F"] 
+# https://docs.astral.sh/ruff/configuration/
+
+extend-select= [
+    "I", # import
+    "PL", # Pylint
+]

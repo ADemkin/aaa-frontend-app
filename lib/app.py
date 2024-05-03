@@ -7,7 +7,6 @@ from aiohttp.web import Application
 from lib import views
 from lib.models import create_model
 
-
 lib = Path("lib")
 
 
