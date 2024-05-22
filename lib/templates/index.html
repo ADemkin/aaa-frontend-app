@@ -1,30 +1,104 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Avito AAA</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" >
-  </head>
-  <body>
-    <nav class="navbar bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <img src="/static/avito.svg" />
-        </a>
-      </div>
-    </nav>
 
-    <!-- отсюда можно удалять -->
-    <div class="container">
-      <p class="text-center">Шаблон подключился! Теперь на его базе можно начинать делать веб приложение.</p>
-      <p class="text-center">Удали этот блок и скопируй сюда содержимое тега <code>body</code> из домашнего задания с занятия 2.</p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avito AAA</title>
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="/static/avito.svg" />
+      </a>
     </div>
-    <!-- всё что ниже лучше оставить -->
+  </nav>
 
-    <footer class="container mt-5">
-        <p class="text-center text-muted">© 2024 Академия Аналитиков Авито</p>
-    </footer>
-    <script src="static/js/bootstrap.bundle.min.js" ></script>
-  </body>
+  {% if not error and not image %}
+  <h1 class="display-1 text-center mb-4">Привет, ААА!</h1>
+  {% endif %}
+
+  {% if error %}
+  <div class="container col-8">
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if image %}
+  <div class="container text-center mb-3 col-8">
+    <img class="img-fluid rounded-3" src="{{ image }}" />
+  </div>
+  {% endif %}
+
+  <div class="container mb-3 col-8">
+    <form class="border border-2 p-3 rounded-4 myCustomClass" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Вставьте изображение .jpeg для распознавания текста</label>
+        <input class="form-control" type="file" id="formFile" name="image">
+      </div>
+      <button type="submit" class="btn btn-primary">Распознать</button>
+    </form>
+  </div>
+
+
+  <div class="container col-8">
+    {% if words %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">Изображение</th>
+          <th scope="col">Слово</th>
+          <th scope="col">Точность</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for word in words %}
+        <tr>
+          <!-- <th scope="row">1</th> -->
+          <td><img src="{{ word.image }}" alt="img" /></td>
+          <td>{{ word.word }}</td>
+          <td class="{% if word.accuracy > 0.90 %} 
+                 table-success
+                 {% elif word.accuracy > 0.70 %}
+                 table-warning
+                 {% else %}
+                 table-danger
+                 {% endif %}
+                ">
+            {{ "%2.2f" | format(word.accuracy*100) }}%
+          </td>
+
+        </tr>
+        <!-- <tr>
+          <td><img src="..." alt="img" /></td>
+          <td>Thornton</td>
+          <td class="table-warning">80.1%</td>
+        </tr>
+        <tr>
+          <td><img src="..." alt="img" /></td>
+          <td>Text</td>
+          <td class="table-danger">11.3%</td>
+        </tr> -->
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="text-center text-muted"> тут будет таблица с изображением
+      словом и точностью распознавания</p>
+    {% endif %}
+  </div>
+
+
+  <footer class="container mt-5">
+    <p class="text-center text-muted">© 2024 Академия Аналитиков Авито</p>
+  </footer>
+  <script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
