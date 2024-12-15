@@ -1,8 +1,12 @@
 FROM python:3.12-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
+RUN apt-get update && apt-get install -y make
 
-# RUN python -m pip install --upgrade pip
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/app
+
+RUN python -m pip install --upgrade pip
+
 RUN mkdir /app
 
 COPY ./requirements.txt ./requirements-dev.txt /app
@@ -16,5 +20,5 @@ RUN python -c "import easyocr; easyocr.Reader(['en'])"
 
 COPY . /app
 
-EXPOSE 8080
-CMD ["python", "run.py"]
+EXPOSE 8000
+CMD ["sh"]
