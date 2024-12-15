@@ -1,6 +1,2 @@
-aiohttp-devtools
-black
-flake8
-pylint
+ruff
 pytest
-pytest-aiohttp

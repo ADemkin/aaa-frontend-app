@@ -1,3 +1,2 @@
-aiohttp-jinja2==1.6
-aiohttp==3.9.3
-easyocr==1.7.1
+fastapi[all]
+easyocr

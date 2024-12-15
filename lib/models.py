@@ -1,5 +1,5 @@
-from easyocr import Reader
+from easyocr import Reader as Reader
 
 
-def create_model() -> Reader:
+def get_model() -> Reader:
     return Reader(["en"])

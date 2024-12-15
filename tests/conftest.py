@@ -1,12 +1,17 @@
 import pytest
-from aiohttp.test_utils import TestClient, TestServer
 
-from lib.app import create_app
+from fastapi import FastAPI
+from lib.app import app as _app
+
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture
-async def client() -> TestClient:
-    app = create_app()
-    async with TestServer(app) as server:
-        async with TestClient(server) as client:
-            yield client
+def app() -> FastAPI:
+    return _app
+
+
+@pytest.fixture
+def client(app) -> TestClient:
+    with TestClient(app) as client:
+        yield client
