@@ -24,7 +24,7 @@ def get_index(request: Request) -> Response:
     return Response(
         content=f"""
             <h1>Работает!</h1>
-            <p>теперь загляни в <pre>{__name__}.py</pre></p>
+            <p>теперь загляни в <pre>{__name__.replace('.','/')}.py</pre></p>
             <!-- а этот код можно удалить -->
         """,
         media_type="text/html",
