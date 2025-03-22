@@ -1,5 +1,5 @@
 .DS_Store
 venv
-.artifacts/
+tests/.artifacts/
 __pycache__
 lib/templates/backup.html
