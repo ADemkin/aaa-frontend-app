@@ -27,7 +27,7 @@ class TestPageContent:
         response = client.get("/")
         assert response.status_code == HTTPStatus.OK, response.text
         text = response.text.lower()
-        assert "<form " in text, "На странице нет формы"
+        assert "</form>" in text, "На странице нет формы"
         assert 'method="post"' in text, "У формы не указан POST метод"
         assert 'enctype="multipart/form-data"' in text, "у формы не указан enctype"
         assert "submit" in text, "у формы нет кнопки отправки"
@@ -55,7 +55,7 @@ class TestPageContent:
         image_file,
     ):
         model_mock.readtext.return_value = [
-            ((0, 0, 10, 10), "avito", 0.99),
+            [[(156, 146), (194, 146), (194, 172), (156, 172)], "word", 0.9]
         ]
         response = client.post("/", files={"file": image_file})
         assert response.status_code == HTTPStatus.OK, response.text
@@ -72,4 +72,4 @@ class TestPageContent:
         response = client.post("/", files={"file": image_file})
         assert response.status_code == HTTPStatus.OK, response.text
         text = response.text.lower()
-        assert "<table" not in text, "на странице не должно быть таблицы"
+        assert "</table>" not in text, "на странице не должно быть таблицы"
