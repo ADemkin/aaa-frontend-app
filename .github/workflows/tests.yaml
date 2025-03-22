@@ -3,6 +3,7 @@ name: tests
 on:
   push:
   workflow_dispatch:
+  pull_request:
 
 jobs:
   actions:
@@ -28,4 +29,5 @@ jobs:
       with:
         name: test-artifacts
         path: tests/.artifacts/*.html
+        include-hidden-files: true
         retention-days: 90
