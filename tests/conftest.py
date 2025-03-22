@@ -31,7 +31,17 @@ def model_mock(app):
 
 @pytest.fixture()
 def image_file():
-    image_path = Path("images/avito.jpg")
+    image_path = Path("images/signs.jpg")
     assert image_path.exists()
     with open(image_path, "rb") as file:
         yield file
+
+
+@pytest.fixture()
+def save_artifact():
+    def _save_artifact(artifact: str, path: str) -> None:
+        base = Path("tests/.artifacts")
+        base.mkdir(exist_ok=True)
+        (base / path).write_text(artifact)
+
+    return _save_artifact

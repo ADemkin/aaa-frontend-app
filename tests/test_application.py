@@ -1,11 +1,17 @@
 from http import HTTPStatus
 
 
-def test_integration(client, image_file):
+def test_integration(
+    client,
+    image_file,
+    save_artifact,
+):
     response = client.post("/", files={"file": image_file})
     assert response.status_code == HTTPStatus.OK, response.text
     text = response.text.lower()
-    assert "avito" in text, f"слово 'avito' не найдено в {text}"
+    word_want = "angeles"
+    assert word_want in text, f"слово {word_want} не найдено в {text}"
+    save_artifact(text, "avito.html")
 
 
 class TestPageContent:
@@ -17,7 +23,7 @@ class TestPageContent:
     """
 
     @staticmethod
-    def test_index_page_contain_valid_multipart_form(client):
+    def test_index_page_contain_valid_multipart_form(client, save_artifact):
         response = client.get("/")
         assert response.status_code == HTTPStatus.OK, response.text
         text = response.text.lower()
@@ -25,12 +31,14 @@ class TestPageContent:
         assert 'method="post"' in text, "У формы не указан POST метод"
         assert 'enctype="multipart/form-data"' in text, "у формы не указан enctype"
         assert "submit" in text, "у формы нет кнопки отправки"
+        save_artifact(text, "empty.html")
 
     @staticmethod
-    def test_if_model_gives_error_then_response_containt_error_text(
+    def test_if_model_gives_error_then_response_contain_error_text(
         client,
         model_mock,
         image_file,
+        save_artifact,
     ):
         error_message = "какая-то ошибка"
         model_mock.readtext.side_effect = Exception(error_message)
@@ -38,6 +46,7 @@ class TestPageContent:
         assert response.status_code == HTTPStatus.OK, response.text
         text = response.text.lower()
         assert error_message in text, "в ответе нет ошибки"
+        save_artifact(text, "error.html")
 
     @staticmethod
     def test_if_model_gives_words_then_response_contain_table(
