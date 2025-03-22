@@ -5,6 +5,7 @@ test:
 	@pytest -v
 
 fmt:
+	@ruff check --fix lib tests
 	@ruff format lib tests
 
 lint: fmt
