@@ -17,19 +17,71 @@
         </a>
       </div>
     </nav>
+    <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-4">
 
-    <!-- этот блок можно удалять -->
-    <div class="container">
-      <p class="text-center">
-        Шаблон подключился! Теперь на его базе можно начинать делать веб
-        приложение.
-      </p>
-      <p class="text-center">
-        Удали этот блок и скопируй сюда содержимое тега <code>body</code> из
-        домашнего задания с занятия 2.
-      </p>
+      {% if not words and not error and not image %}
+      <h1 class="mb-3 text-center">Загрузка файла</h1>
+      {% endif %}
+      
+      {% if error %}
+      <div class="alert alert-danger text-center w-100" role="alert">
+        {{ error }}
+      </div>
+      {% endif %}
+  
+      {% if image %}
+      <div class="mb-4 w-100 text-center">
+        <img class="img-fluid mx-auto d-block" src="{{ image }}" alt="Ошибка загрузки изображения" />
+      </div>
+      {% endif %}
+  
+      <form 
+        class="mb-4 w-100"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Выберите файл для загрузки</label>
+          <input class="form-control" type="file" name="file" id="formFile">
+        </div>
+        <button type="submit" class="btn btn-primary" enabled>Загрузить</button>
+      </form>
+  
+      {% if words %}
+      <div class="table-responsive w-100">
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Текст</th>
+              <th>Accuracy</th>
+              <th>Картинка</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for word in words %}
+            <tr>
+              <td>{{ word.word }}</td>
+              <td
+                class="
+                        {% if word.accuracy > 0.95 %}
+                        table-success
+                        {% elif word.accuracy > 0.85 %}
+                        table-warning
+                        {% elif word.accuracy < 0.5 %}
+                        table-danger
+                        {% endif %}
+                      "
+              >{{"%2.2f" | format( word.accuracy * 100) }}%
+              </td>
+              <td><img src="{{ word.image }}"/></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+  
     </div>
-    <!-- блок выше можно удалять -->
 
     <footer class="container mt-5">
       <p class="text-center text-muted">© 2025 Академия Аналитиков Авито</p>
