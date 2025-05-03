@@ -18,17 +18,19 @@ app.mount("/static", StaticFiles(directory="static"))
 templates = Jinja2Templates(directory="templates")
 
 
+def get_err_dict(err: Exception) -> dict:
+    err_dict = {"exception": err.__class__.__name__, "text": str(err)}
+    return err_dict
+
+
 @app.get("/", response_class=HTMLResponse)
 def get_index(request: Request) -> Response:
-    return Response(
-        content=f"""
-            <h1>Работает!</h1>
-            <p>теперь загляни в <pre>{__name__.replace(".", "/")}.py</pre></p>
-            <!-- а этот код можно удалить -->
-        """,
-        media_type="text/html",
-    )
-    # return templates.TemplateResponse(request, "index.html")
+    ctx: dict = {}
+    try:
+        return templates.TemplateResponse(request, "index.html")
+    except Exception as err:
+        ctx.update(error=get_err_dict(err))
+        return templates.TemplateResponse(request, "index.html", ctx)
 
 
 @app.post("/", response_class=HTMLResponse)
@@ -58,5 +60,5 @@ def infer_model(
             words=words,
         )
     except Exception as err:
-        ctx.update(error=str(err))
+        ctx.update(error=get_err_dict(err))
     return templates.TemplateResponse(request, "index.html", ctx)
