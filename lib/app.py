@@ -20,15 +20,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 def get_index(request: Request) -> Response:
-    return Response(
-        content=f"""
-            <h1>Работает!</h1>
-            <p>теперь загляни в <pre>{__name__.replace(".", "/")}.py</pre></p>
-            <!-- а этот код можно удалить -->
-        """,
-        media_type="text/html",
-    )
-    # return templates.TemplateResponse(request, "index.html")
+    return templates.TemplateResponse(request, "index.html")
 
 
 @app.post("/", response_class=HTMLResponse)
